@@ -1,13 +1,8 @@
 import React from "react";
 import "./Homepage.styles.scss";
-import {
-  pagination,
-  Navigation,
-  Scrollbar,
-  A11y,
-  Pagination,
-} from "swiper/modules";
+import { Navigation, Pagination, Scrollbar, A11y } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
+
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -21,50 +16,41 @@ const categories = [
 ];
 
 const recentlyViewed = [
-  {
-    name: "Product 1",
-    price: "₹999",
-    image: "https://placehold.co/400x400/png",
-  },
-  {
-    name: "Product 2",
-    price: "₹799",
-    image: "https://placehold.co/400x400/png",
-  },
-  {
-    name: "Product 3",
-    price: "₹599",
-    image: "https://placehold.co/400x400/png",
-  },
-  {
-    name: "Product 4",
-    price: "₹899",
-    image: "https://placehold.co/400x400/png",
-  },
+  { name: "Product 1", price: "₹999", image: "https://placehold.co/400x400/png" },
+  { name: "Product 2", price: "₹799", image: "https://placehold.co/400x400/png" },
+  { name: "Product 3", price: "₹599", image: "https://placehold.co/400x400/png" },
+  { name: "Product 4", price: "₹899", image: "https://placehold.co/400x400/png" },
+  { name: "Product 5", price: "₹999", image: "https://placehold.co/400x400/png" },
+  { name: "Product 6", price: "₹799", image: "https://placehold.co/400x400/png" },
 ];
 
 const Homepage = () => {
-  const renderRecentlyViewedSection = () => {
-    return (
-      <Swiper
-        modules={[Navigation, Pagination, Scrollbar, A11y]}
-        spaceBetween={50}
-        slidesPerView={5}
-        navigation={true}
-        pagination={{ clickable: true }}
-      >
-        {recentlyViewed?.map((item, idx) => (
-          <SwiperSlide>
-            <div key={idx} className="product-card">
-              <img src={item.image} alt={item.name} />
-              <p>{item.name}</p>
-              <span>{item.price}</span>
-            </div>
-          </SwiperSlide>
-        ))}
-      </Swiper>
-    );
-  };
+  const renderRecentlyViewedSection = () => (
+    <Swiper
+      modules={[Navigation, Pagination, Scrollbar, A11y]}
+      spaceBetween={20}
+      // navigation
+      pagination={{ clickable: true }}
+      breakpoints={{
+        320: { slidesPerView: 1.5 },
+        480: { slidesPerView: 2 },
+        768: { slidesPerView: 3 },
+        1024: { slidesPerView: 4 },
+        1280: { slidesPerView: 5 },
+      }}
+    >
+      {recentlyViewed.map((item, idx) => (
+        <SwiperSlide key={idx}>
+          <div className="product-card">
+            <img src={item.image} alt={item.name} />
+            <p>{item.name}</p>
+            <span>{item.price}</span>
+          </div>
+        </SwiperSlide>
+      ))}
+    </Swiper>
+  );
+
   return (
     <div className="homepage">
       <div className="hero-banner">
@@ -87,16 +73,7 @@ const Homepage = () => {
 
       <div className="section">
         <h2>Recently Viewed</h2>
-        <div className="recently-viewed-slider">
-          {/* {recentlyViewed.map((item, idx) => (
-            <div key={idx} className="product-card">
-              <img src={item.image} alt={item.name} />
-              <p>{item.name}</p>
-              <span>{item.price}</span>
-            </div>
-          ))} */}
-          {renderRecentlyViewedSection()}
-        </div>
+        {renderRecentlyViewedSection()}
       </div>
     </div>
   );
