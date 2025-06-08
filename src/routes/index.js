@@ -9,6 +9,8 @@ const ProductDescriptionPage = lazy(() =>
 );
 const NotFound = lazy(() => import("../components/NotFoundPage"));
 
+const Profile = lazy(()=>import("../components/Profile"));
+
 const AppRouter = () => {
   return (
     <Routes>
@@ -16,6 +18,7 @@ const AppRouter = () => {
       <Route path="/products" element={<ProductLandingPage />} />
       <Route path="/product/:productId" element={<ProductDescriptionPage />} />
       <Route path="/not-found" element={<NotFound />} />
+      <Route path="/profile" element={<Profile />} />
     </Routes>
   );
 };
