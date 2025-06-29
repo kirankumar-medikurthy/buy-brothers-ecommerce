@@ -15,7 +15,7 @@ const AppRouter = () => {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
-      <Route path="/products" element={<ProductLandingPage />} />
+      <Route path="/products/:category" element={<ProductLandingPage />} />
       <Route path="/product/:productId" element={<ProductDescriptionPage />} />
       <Route path="/not-found" element={<NotFound />} />
       <Route path="/profile" element={<Profile />} />

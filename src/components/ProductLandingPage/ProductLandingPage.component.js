@@ -1,93 +1,156 @@
 import React, { useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
-import "swiper/css/scrollbar";
 import "./ProductLandingPage.styles.scss";
 
-const products = Array.from({ length: 100 }, (_, i) => ({
+// Sample product data
+const products = Array.from({ length: 20 }, (_, i) => ({
   id: i + 1,
-  name: `Product ${i + 1}`,
-  price: Math.floor(Math.random() * 100) + 50,
-  sizes: ["XS", "S", "M", "L", "XL"],
-  image: "https://placehold.co/300x300/png"
+  name: `Mesh Detail Pointed Toe Pumps - Black`,
+  brand: "CHARLES & KEITH",
+  price: 299,
+  sizes: ["35", "36", "37", "38", "39", "40", "41", "42"],
+  image: "https://placehold.co/400x400/png",
 }));
 
-const ProductLandingPage = () => {
-  const [visibleCount, setVisibleCount] = useState(15);
+// Accordion item
+const AccordionItem = ({ title, content }) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const toggleAccordion = () => setIsOpen(!isOpen);
 
-  const loadMore = () => {
-    setVisibleCount((prev) => prev + 15);
+  return (
+    <div className={`accordion-item ${isOpen ? "open" : ""}`}>
+      <div className="accordion-title-container" onClick={toggleAccordion}>
+        <div className="accordion-title">{title}</div>
+        <div className="arrow">{isOpen ? "▴" : "▾"}</div>
+      </div>
+      {isOpen && content && <div className="accordion-content">{content}</div>}
+    </div>
+  );
+};
+
+const ProductLandingPage = () => {
+  const [visibleCount, setVisibleCount] = useState(12);
+  const [selectedSizes, setSelectedSizes] = useState({});
+
+  const loadMore = () => setVisibleCount((prev) => prev + 12);
+
+  const handleSizeSelect = (productId, size) => {
+    setSelectedSizes((prev) => ({ ...prev, [productId]: size }));
   };
 
   return (
     <div className="product-landing-page">
       <aside className="filters">
-        <h3>Filters</h3>
+        <div className="filters-header">
+          <h3>FILTERS</h3>
+          <button className="clear-all">Clear All</button>
+        </div>
 
-        <div className="filter-section">
-          <div className="filter-group">
-            <label htmlFor="category">Category</label>
-            <select id="category">
-              <option>All</option>
-              <option>Men</option>
-              <option>Women</option>
-              <option>Kids</option>
-            </select>
-          </div>
-          <div className="filter-group">
-            <label htmlFor="size">Size</label>
-            <select id="size">
-              <option>All</option>
-              <option>XS</option>
-              <option>S</option>
-              <option>M</option>
-              <option>L</option>
-              <option>XL</option>
-            </select>
-          </div>
-          <div className="filter-group">
-            <label htmlFor="price">Price</label>
-            <select id="price">
-              <option>All</option>
-              <option>Under $50</option>
-              <option>$50 - $100</option>
-              <option>$100 - $200</option>
-            </select>
-          </div>
+        <div className="accordion">
+          {[
+            {
+              title: "CATEGORIES",
+              content: (
+                <>
+                  <input
+                    type="text"
+                    placeholder="Search Categories"
+                    className="filter-search"
+                  />
+                  <ul className="filter-list">
+                    <li>
+                      <label>
+                        <input type="checkbox" /> Flip flops and Slides
+                      </label>
+                    </li>
+                    <li>
+                      <label>
+                        <input type="checkbox" /> Sandals
+                      </label>
+                    </li>
+                    <li>
+                      <label>
+                        <input type="checkbox" /> Shoes Accessories
+                      </label>
+                    </li>
+                    <li>
+                      <label>
+                        <input type="checkbox" /> Sneakers
+                      </label>
+                    </li>
+                  </ul>
+                </>
+              ),
+            },
+            { title: "BRANDS" },
+            { title: "COLOURS" },
+            { title: "GENDER" },
+            { title: "DISCOUNT" },
+            { title: "BY STOCK" },
+            { title: "SIZES" },
+          ].map((item, index) => (
+            <AccordionItem
+              key={index}
+              title={item.title}
+              content={item.content}
+            />
+          ))}
         </div>
       </aside>
 
-      <main className="product-list">
-        {products.slice(0, visibleCount).map((product) => (
-          <div className="product-card" key={product.id}>
-            <img src={product.image} alt={product.name} />
-            <button className="wishlist">♥</button>
-            <div className="overlay">
-              <Swiper spaceBetween={10} slidesPerView={3} className="size-swiper">
-                {product.sizes.map((size, index) => (
-                  <SwiperSlide key={index} className="size-slide">
-                    <button className="size-btn">{size}</button>
-                  </SwiperSlide>
-                ))}
-              </Swiper>
-              <button className="add-to-bag">Add to Bag</button>
-            </div>
-            <div className="product-info">
-              <h4>{product.name}</h4>
-              <p>${product.price}</p>
-            </div>
-          </div>
-        ))}
-      </main>
+      <div className="product-list-container">
+        <main className="product-list">
+          {products.slice(0, visibleCount).map((product) => (
+            <div className="product-card" key={product.id}>
+              <div className="product-image">
+                <img src={product.image} alt={product.name} />
+                <button className="wishlist">&#9825;</button>
+              </div>
 
-      {visibleCount < products.length && (
-        <div className="load-more-wrapper">
-          <button className="load-more" onClick={loadMore}>
-            Load More
-          </button>
-        </div>
-      )}
+              <div className="product-info">
+                <h4 className="brand">{product.brand}</h4>
+                <p className="name">{product.name}</p>
+                <p className="price">₹ {product.price}</p>
+              </div>
+
+              <div className="product-hover-overlay">
+                <Swiper
+                  modules={[Navigation]}
+                  spaceBetween={10}
+                  slidesPerView={3}
+                  navigation
+                  className="size-swiper"
+                >
+                  {product.sizes.map((size) => (
+                    <SwiperSlide key={size}>
+                      <button
+                        className={`size-btn ${
+                          selectedSizes[product.id] === size ? "selected" : ""
+                        }`}
+                        onClick={() => handleSizeSelect(product.id, size)}
+                      >
+                        {size}
+                      </button>
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
+                <button className="add-to-bag">ADD TO BAG</button>
+              </div>
+            </div>
+          ))}
+        </main>
+
+        {visibleCount < products.length && (
+          <div className="load-more-wrapper">
+            <button className="load-more" onClick={loadMore}>
+              Load More
+            </button>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

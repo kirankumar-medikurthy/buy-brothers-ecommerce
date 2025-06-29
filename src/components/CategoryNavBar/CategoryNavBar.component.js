@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import "./CategoryNavBar.styles.scss";
 
 const categories = [
@@ -6,11 +7,6 @@ const categories = [
   { name: "SHOES", items: ["Sneakers", "Heels", "Loafers"] },
   { name: "BAGS", items: ["Handbags", "Backpacks", "Wallets"] },
   { name: "CLOTHING", items: ["T-Shirts", "Dresses", "Jackets"] },
-  { name: "SPORTS", items: ["Activewear", "Running", "Yoga"] },
-  { name: "ACCESSORIES", items: ["Watches", "Sunglasses", "Belts"] },
-  { name: "BEAUTY", items: ["Skincare", "Fragrance", "Makeup"] },
-  { name: "PREMIUM", items: ["Designer", "Luxury Picks"] },
-  { name: "OUTLET", items: ["Sale Shoes", "Clearance Clothing"] },
 ];
 
 const CategoryNavBar = () => {
@@ -28,13 +24,17 @@ const CategoryNavBar = () => {
             onMouseEnter={() => setActiveCategory(index)}
             onMouseLeave={() => setActiveCategory(null)}
           >
+            <Link to={`/products/${cat.name.toLowerCase().replace(/\s+/g, '-')}`} className="category-link">
             {cat.name}
+            </Link>
 
             {activeCategory === index && (
               <div className="category-overlay">
                 {cat.items.map((item, idx) => (
                   <div key={idx} className="overlay-item">
-                    {item}
+                    <Link to={`/product/${item.toLowerCase().replace(/\s+/g, '-')}`}>
+                      {item}
+                    </Link>
                   </div>
                 ))}
               </div>
