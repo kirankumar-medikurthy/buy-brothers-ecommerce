@@ -4,6 +4,7 @@ import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "./ProductLandingPage.styles.scss";
+import { useNavigate } from "react-router-dom";
 
 // Sample product data
 const products = Array.from({ length: 20 }, (_, i) => ({
@@ -34,6 +35,7 @@ const AccordionItem = ({ title, content }) => {
 const ProductLandingPage = () => {
   const [visibleCount, setVisibleCount] = useState(12);
   const [selectedSizes, setSelectedSizes] = useState({});
+  const navigate = useNavigate();
 
   const loadMore = () => setVisibleCount((prev) => prev + 12);
 
@@ -103,8 +105,10 @@ const ProductLandingPage = () => {
 
       <div className="product-list-container">
         <main className="product-list">
-          {products.slice(0, visibleCount).map((product) => (
-            <div className="product-card" key={product.id}>
+          {products.slice(0, visibleCount).map((product, index) => (
+            <div className="product-card" key={product.id} onClick={() => {
+              navigate(`/product/${index}`)
+            }}>
               <div className="product-image">
                 <img src={product.image} alt={product.name} />
                 <button className="wishlist">&#9825;</button>
